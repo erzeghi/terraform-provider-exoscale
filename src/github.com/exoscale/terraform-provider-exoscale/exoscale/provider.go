@@ -67,7 +67,7 @@ func Provider() terraform.ResourceProvider {
 			"exoscale_compute":             computeResource(),
 			"exoscale_ssh":                 sshResource(),
 			"exoscale_affinity":            affinityResource(),
-			"exoscale_securitygroup":       securityGroupResource(),
+			"exoscale_securitygroup":       SecurityGroupResource(),
 			"exoscale_dns":                 dnsResource(),
 			"exoscale_s3bucket":            s3BucketResource(),
 			"exoscale_s3object":            s3ObjectResource(),
