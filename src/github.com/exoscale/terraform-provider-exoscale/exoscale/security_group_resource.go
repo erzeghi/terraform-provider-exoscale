@@ -62,7 +62,12 @@ func ReadSecurityGroup(d *schema.ResourceData, meta interface{}) error {
 	client := GetComputeClient(meta)
 	resp, err := client.GetSecurityGroupById(d.Id())
 	if err != nil {
-		return err
+		// XXX A deleted SecurityGroup returns a 431 error.
+		//     we shall use pkg/errors to know more about it
+		//     and act accordingly (real timeout error vs not
+		//     found error)
+		d.SetId("")
+		return nil
 	}
 
 	return applySecurityGroup(resp, d)

@@ -3,7 +3,6 @@ package exoscale
 import (
 	"fmt"
 	"log"
-	"net/url"
 	"regexp"
 	"strings"
 
@@ -266,23 +265,10 @@ func convertTemplateName(t string) string {
 
 // getSecurityGroup finds a SecurityGroup by UUID or name
 func getSecurityGroup(client *egoscale.Client, name string) (*egoscale.SecurityGroup, error) {
-	params := url.Values{}
 	if isUuid(name) {
-		log.Printf("[DEBUG] search Security Group by id: %s", name)
-		params.Set("id", name)
-	} else {
-		log.Printf("[DEBUG] search Security Group by name: %s", name)
-		params.Set("securitygroupname", name)
+		return client.GetSecurityGroupById(name)
 	}
-	sgs, err := client.GetSecurityGroups(params)
-	if err != nil {
-		return nil, err
-	}
-
-	if len(sgs) == 1 {
-		return sgs[0], nil
-	}
-	return nil, fmt.Errorf("Invalid security group: %s. Found %d.", name, len(sgs))
+	return client.GetSecurityGroupByName(name)
 }
 
 // isUuid matches a UUIDv4
